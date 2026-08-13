@@ -1,11 +1,8 @@
 {
-    "name": "dextinity-api-chart",
+    "name": "dextinity-api",
     "version": "1.0.0",
     "private": true,
     "description": "Helm chart for a Dextinity API Microservice.",
-    "workspaces": [
-        "charts/*"
-    ],
     "scripts": {
         "prepare": "husky",
         "changeset:version": "changeset version && node sync-versions.js"
