@@ -21,3 +21,16 @@
 .idea/
 *.tmproj
 .vscode/
+
+# Repository tooling, not part of the chart
+node_modules/
+package.json
+package-lock.json
+sync-versions.js
+lint-staged.config.js
+.changeset/
+.github/
+.husky/
+.nvmrc
+.prettierrc
+.prettierignore
