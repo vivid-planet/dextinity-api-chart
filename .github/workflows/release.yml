@@ -1,0 +1,49 @@
+name: Release Chart
+
+on:
+  push:
+    branches:
+      - 1.x
+
+env:
+  CHART_NAME: dextinity-api
+  OCI_REPOSITORY: ghcr.io/vivid-planet/charts
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Log in to the container registry
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$REGISTRY_TOKEN" | helm registry login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+
+      - name: Package and push the chart
+        run: |
+          version=$(helm show chart "charts/$CHART_NAME" | awk '/^version:/ { print $2 }')
+
+          if helm show chart "oci://$OCI_REPOSITORY/$CHART_NAME" --version "$version" >/dev/null 2>&1; then
+            echo "$CHART_NAME $version is already published, skipping"
+            exit 0
+          fi
+
+          helm package "charts/$CHART_NAME" --destination "$RUNNER_TEMP"
+          helm push "$RUNNER_TEMP/$CHART_NAME-$version.tgz" "oci://$OCI_REPOSITORY"
+
+      - name: Tag the release
+        run: |
+          version=$(helm show chart "charts/$CHART_NAME" | awk '/^version:/ { print $2 }')
+
+          if [ -z "$(git ls-remote --tags origin "v$version")" ]; then
+            git tag "v$version"
+            git push origin "v$version"
+          fi
