@@ -3,7 +3,7 @@ name: Create Release Pull Request
 on:
   push:
     branches:
-      - 1.x
+      - v1.x
 
 jobs:
   release:

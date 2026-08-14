@@ -3,7 +3,7 @@ name: Release Chart
 on:
   push:
     branches:
-      - 1.x
+      - v1.x
 
 env:
   CHART_NAME: dextinity-api

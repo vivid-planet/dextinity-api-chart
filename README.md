@@ -23,8 +23,8 @@ There is no `helm repo add` step — the `oci://` repository is resolved directl
 
 ## Branches
 
-Every major version has its own branch. `1.x` carries the 1.x line and is the default
-branch; a breaking change opens a `2.x` branch next to it, so older majors keep receiving
+Every major version has its own branch. `v1.x` carries the 1.x line and is the default
+branch; a breaking change opens a `v2.x` branch next to it, so older majors keep receiving
 fixes.
 
 ## Versioning
