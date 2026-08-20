@@ -1,0 +1,20 @@
+apiVersion: v2
+name: dextinity-api
+description: Helm chart for a Dextinity API Microservice
+type: application
+
+home: https://www.dextinity.com
+
+maintainers:
+  - name: Daniel Karnutsch
+    email: daniel.karnutsch@vivid-planet.com
+  - name: Georg Schreglmann
+    email: georg.schreglmann@vivid-planet.com
+  - name: Franz Unger
+    email: franz.unger@vivid-planet.com
+  - name: Alexander Kaufmann
+    email: alexander.kaufmann@vivid-planet.com
+  - name: Philipp Pregernigg
+    email: philipp.pregernigg@vivid-planet.com
+
+version: 1.0.0

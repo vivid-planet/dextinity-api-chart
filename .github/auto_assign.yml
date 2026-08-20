@@ -1,0 +1,10 @@
+addAssignees: author
+
+addReviewers: true
+
+reviewers:
+  - fraxachun
+  - kaufmo
+  - dkarnutsch
+  - Schreglmann
+  - Vierlip

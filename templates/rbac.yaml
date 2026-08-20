@@ -1,0 +1,32 @@
+{{- if .Values.serviceAccount.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "dextinity-api.serviceAccountName" . }}
+  labels:
+    {{- include "dextinity-api.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "dextinity-api.serviceAccountName" . }}-restricted
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "dextinity-api.serviceAccountName" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "dextinity-api.serviceAccountName" . }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "dextinity-api.fullname" . }}-service-account-token
+  annotations:
+    kubernetes.io/service-account.name: {{ include "dextinity-api.serviceAccountName" . }}
+type: kubernetes.io/service-account-token
+{{- end }}
