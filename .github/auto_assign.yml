@@ -2,6 +2,10 @@ addAssignees: author
 
 addReviewers: true
 
+# 0 means everyone on the list below. The key has to be here: the action reads an
+# explicit 0 as "all", but an absent key as "one random reviewer".
+numberOfReviewers: 0
+
 reviewers:
   - fraxachun
   - kaufmo
