@@ -1,0 +1,19 @@
+name: Auto Assign
+
+on:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+
+jobs:
+  auto-assign:
+    # The action reads .github/auto_assign.yml through the API, so it needs contents:read
+    # and no checkout step.
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign the author and request reviews
+        uses: kentaro-m/auto-assign-action@v2.0.2
