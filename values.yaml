@@ -172,6 +172,16 @@ env:
   SERVER_HOST: "0.0.0.0"
 additionalConfigMapNames: {}
 secrets: {}
+# Creates Kubernetes Secrets via the 1Password Kubernetes Operator and maps individual fields
+# to container env vars, parsed from 1Password secret reference URIs
+# (op://vault/item/[section/]field), see https://www.1password.dev/k8s/operator#kubernetes-secret-from-item
+# Multiple entries referencing the same vault/item share a single generated Secret.
+# Map of env var name -> reference.
+onePasswordSecrets: {}
+# onePasswordSecrets:
+#   IDP_CLIENT_ID: "op://my-vault/idp-item/client-id"
+#   DB_USERNAME: "op://my-vault/sql-item/sql/username"
+#   DB_PASSWORD: "op://my-vault/sql-item/sql/password"
 additionalSecretNames: {}
 additionalPodLabels: {}
 additionalDeploymentLabels: {}
