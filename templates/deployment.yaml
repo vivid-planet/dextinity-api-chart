@@ -85,6 +85,17 @@ spec:
             - secretRef:
                 name:  {{ $val }}
 {{- end }}
+{{- if .Values.onePasswordSecrets }}
+          env:
+{{- range $envName, $ref := .Values.onePasswordSecrets }}
+  {{- $parsed := include "dextinity-api.opRef.parse" $ref | fromJson }}
+            - name: {{ $envName }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $parsed.secretName }}
+                  key: {{ $parsed.field }}
+{{- end }}
+{{- end }}
           startupProbe:
             {{- toYaml .Values.startupProbe | nindent 12 }}
           livenessProbe:

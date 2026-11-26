@@ -70,3 +70,28 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
   {{- end }}
 {{- end }}
+
+{{/*
+Parse a 1Password secret reference (op://vault/item/[section/]field, optionally wrapped in
+{{ }}) into its vault, item and field, plus the derived OnePasswordItem itemPath and a
+deterministic Kubernetes Secret name for the item (shared by all fields of the same item).
+*/}}
+{{- define "dextinity-api.opRef.parse" -}}
+  {{- $raw := trim . -}}
+  {{- if and (hasPrefix "{{" $raw) (hasSuffix "}}" $raw) -}}
+    {{- $raw = $raw | trimPrefix "{{" | trimSuffix "}}" | trim -}}
+  {{- end -}}
+  {{- if not (hasPrefix "op://" $raw) -}}
+    {{- fail (printf "invalid 1Password secret reference %q, expected op://vault/item/[section/]field" $raw) -}}
+  {{- end -}}
+  {{- $ref := trimPrefix "op://" $raw -}}
+  {{- $parts := splitList "/" $ref -}}
+  {{- if lt (len $parts) 3 -}}
+    {{- fail (printf "invalid 1Password secret reference %q, expected op://vault/item/[section/]field" $raw) -}}
+  {{- end -}}
+  {{- $vault := index $parts 0 -}}
+  {{- $item := index $parts 1 -}}
+  {{- $field := index $parts (sub (len $parts) 1) -}}
+  {{- $secretName := printf "op-%s" (regexReplaceAll "[^a-z0-9-]+" (lower $item) "-" | trunc 40 | trimSuffix "-") -}}
+  {{- dict "vault" $vault "item" $item "field" (lower $field) "itemPath" (printf "vaults/%s/items/%s" $vault $item) "secretName" $secretName | toJson -}}
+{{- end -}}
