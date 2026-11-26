@@ -1,5 +1,11 @@
 # dextinity-api
 
+## 1.1.0
+
+### Minor Changes
+
+- afff322: Add the value `lifecycle`, which sets the lifecycle hooks of the API container, such as a `preStop` pause.
+
 ## 1.0.0
 
 ### Major Changes
