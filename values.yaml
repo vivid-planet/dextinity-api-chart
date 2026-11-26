@@ -107,6 +107,11 @@ readinessProbe:
     path: /api/healthcheck/ready
     port: http
 
+lifecycle: {}
+  # preStop:
+  #   sleep:
+  #     seconds: 5
+
 cronJobs:
   build-checker:
     enabled: false
